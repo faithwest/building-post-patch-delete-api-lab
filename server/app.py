@@ -80,6 +80,19 @@ def update_bakery(id):
 
     return jsonify(bakery.to_dict()), 200
 
+def create_baked_good():
+    data = request.form
+    baked_good = BakedGood(
+        name=data.get("name"),
+        price=data.get("price"),
+        bakery_id=data.get("bakery_id")
+    )
+
+    db.session.add(baked_good)
+    db.session.commit()
+
+    return jsonify(baked_good.to_dict()), 201
+
 @app.route('/baked_goods/<int:id>', methods=['DELETE'])
 def delete_baked_good(id):
     baked_good = BakedGood.query.get_or_404(id)
